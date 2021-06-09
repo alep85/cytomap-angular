@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cytoscape-mapbox-angular": {
+    "cytomap-angular": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/cytoscape-mapbox-angular",
+            "outputPath": "dist/cytomap-angular",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -31,9 +31,13 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/mapbox-gl/dist/mapbox-gl.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/mapbox-gl/dist/mapbox-gl.js",
+              "./node_modules/cytoscape-mapbox-gl/dist/cytoscape-mapbox-gl.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -72,10 +76,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "cytoscape-mapbox-angular:build:production"
+              "browserTarget": "cytomap-angular:build:production"
             },
             "development": {
-              "browserTarget": "cytoscape-mapbox-angular:build:development"
+              "browserTarget": "cytomap-angular:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cytoscape-mapbox-angular:build"
+            "browserTarget": "cytomap-angular:build"
           }
         },
         "test": {
@@ -107,5 +111,5 @@
       }
     }
   },
-  "defaultProject": "cytoscape-mapbox-angular"
+  "defaultProject": "cytomap-angular"
 }
