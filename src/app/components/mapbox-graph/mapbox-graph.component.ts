@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { graphData } from './graph.data';
 import * as cytoscape from 'cytoscape';
 import { graphStyle } from './graph.style';
@@ -11,20 +11,22 @@ declare var CytoscapeMapbox: any;
   templateUrl: './mapbox-graph.component.html',
   styleUrls: ['./mapbox-graph.component.scss'],
 })
-export class MapboxGraphComponent implements OnInit {
+export class MapboxGraphComponent implements OnInit, AfterViewInit {
+  cy: any;
+
   constructor() {}
 
   ngOnInit(): void {
     cytoscape.use(CytoscapeMapbox);
 
-    const cy = cytoscape({
+    this.cy = cytoscape({
       container: document.getElementById('cy'),
-      elements: graphData,
+      elements: [],
       style: graphStyle,
     }) as any;
 
-    cy.autoungrabify(true); // disable node dragging
-    const cyMap = cy.mapboxgl(
+    this.cy.autoungrabify(true); // disable node dragging
+    const cyMap = this.cy.mapboxgl(
       {
         container: document.getElementById('cy'),
         accessToken: '', // mapbox access token is required
@@ -34,8 +36,23 @@ export class MapboxGraphComponent implements OnInit {
         getPosition: (node: any) => {
           return [node.data('lng'), node.data('lat')];
         },
+        setPosition: (node: any, lngLat: any) => {
+          node.data('lng', lngLat.lng);
+          node.data('lat', lngLat.lat);
+        },
+        animate: true,
+        animationDuration: 1000,
       }
     );
     cyMap.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+  }
+
+  ngAfterViewInit(): void {
+    graphData.nodes.forEach((node: any) => {
+      this.cy.add(node);
+    });
+    graphData.edges.forEach((edge: any) => {
+      this.cy.add(edge);
+    });
   }
 }
