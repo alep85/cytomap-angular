@@ -11,7 +11,7 @@ declare var CytoscapeMapbox: any;
   templateUrl: './mapbox-graph.component.html',
   styleUrls: ['./mapbox-graph.component.scss'],
 })
-export class MapboxGraphComponent implements OnInit, AfterViewInit {
+export class MapboxGraphComponent implements OnInit {
   cy: any;
 
   constructor() {}
@@ -21,7 +21,7 @@ export class MapboxGraphComponent implements OnInit, AfterViewInit {
 
     this.cy = cytoscape({
       container: document.getElementById('cy'),
-      elements: [],
+      elements: graphData,
       style: graphStyle,
     }) as any;
 
@@ -45,14 +45,5 @@ export class MapboxGraphComponent implements OnInit, AfterViewInit {
       }
     );
     cyMap.map.addControl(new mapboxgl.NavigationControl(), 'top-left');
-  }
-
-  ngAfterViewInit(): void {
-    graphData.nodes.forEach((node: any) => {
-      this.cy.add(node);
-    });
-    graphData.edges.forEach((edge: any) => {
-      this.cy.add(edge);
-    });
   }
 }
